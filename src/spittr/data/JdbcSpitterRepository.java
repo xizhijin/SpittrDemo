@@ -13,15 +13,15 @@ import spittr.Spitter;
 @Repository
 public class JdbcSpitterRepository implements SpitterRepository {
 
-	private JdbcOperations jdbc;
+	private JdbcOperations jdbcOperations;
 
 	@Autowired
 	public JdbcSpitterRepository(JdbcOperations jdbc) {
-		this.jdbc = jdbc;
+		this.jdbcOperations = jdbc;
 	}
 
 	public Spitter save(Spitter spitter) {
-		jdbc.update("insert into Spitter (username, password, first_name, last_name, email)" + " values (?, ?, ?, ?, ?)", 
+		jdbcOperations.update("insert into Spitter (username, password, first_name, last_name, email)" + " values (?, ?, ?, ?, ?)", 
 				spitter.getUsername(),
 				spitter.getPassword(), spitter.getFirstName(),
 				spitter.getLastName(), spitter.getEmail());
@@ -29,7 +29,7 @@ public class JdbcSpitterRepository implements SpitterRepository {
 	}
 
 	public Spitter findByUsername(String username) {
-		return jdbc.queryForObject("select id, username, null, first_name, last_name, email from Spitter where username=?", new SpitterRowMapper(), username);
+		return jdbcOperations.queryForObject("select id, username, null, first_name, last_name, email from Spitter where username=?", new SpitterRowMapper(), username);
 	}
 
 	private static class SpitterRowMapper implements RowMapper<Spitter> {

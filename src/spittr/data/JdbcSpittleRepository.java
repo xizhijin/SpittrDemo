@@ -14,16 +14,16 @@ import spittr.Spittle;
 
 @Repository
 public class JdbcSpittleRepository implements SpittleRepository {
-	private JdbcOperations jdbc;
+	private JdbcOperations jdbcOperations;
 	
 	@Autowired
 	public JdbcSpittleRepository(JdbcOperations jdbc) {
-		this.jdbc = jdbc;
+		this.jdbcOperations = jdbc;
 	}
 
 	@Override
 	public List<Spittle> findSpittles(long max, int count) {
-		    return jdbc.query(
+		    return jdbcOperations.query(
 		        "select id, message, created_at, latitude, longitude" +
 		        " from Spittle" +
 		        " where id < ?" +
@@ -34,7 +34,7 @@ public class JdbcSpittleRepository implements SpittleRepository {
 	
 	@Override
 	public Spittle findOne(long id) {
-	    return jdbc.queryForObject(
+	    return jdbcOperations.queryForObject(
 	        "select id, message, created_at, latitude, longitude" +
 	        " from Spittle" +
 	        " where id = ?",
